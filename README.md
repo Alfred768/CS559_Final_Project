@@ -13,10 +13,10 @@
 | File Name                         | Description                                                                 |
 |----------------------------------|-----------------------------------------------------------------------------|
 | `GroupXX_TrainingData.ipynb`     | Shared notebook containing Sections 3.1 and 3.2: feature preparation and clustering |
-| `A_Subgroup0.ipynb`              | Member A’s stacking model for Subgroup 0                                    |
-| `B_Subgroup1.ipynb`              | Member B’s stacking model for Subgroup 1                                    |
-| `C_Subgroup2.ipynb`              | Member C’s stacking model for Subgroup 2                                    |
-| `D_Subgroup3.ipynb`              | Member D’s stacking model for Subgroup 3                                    |
+| `A_Subgroup1.ipynb`              | Member A’s stacking model for Subgroup 1                                    |
+| `B_Subgroup2.ipynb`              | Member B’s stacking model for Subgroup 2                                    |
+| `C_Subgroup3.ipynb`              | Member C’s stacking model for Subgroup 3                                    |
+| `D_Subgroup4.ipynb`              | Member D’s stacking model for Subgroup 4                                    |
 | `GroupXX_Generalization.ipynb`   | Final unified script for test set prediction (Section 4)                    |
 | `submission.csv`                 | Final prediction results for the 1012 test companies                        |
 | `GroupXX_CS559_Results.docx`     | Team report: subgroup stats, characteristics, accuracy table (Table 3), confusion matrices, and video link |
