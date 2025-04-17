@@ -6,29 +6,34 @@ This project aims to improve bankruptcy prediction by dividing the dataset into 
 
 ## 🗂️ Project Workflow
 
-### Step 1: Data Cleaning and Preparation
+### Step 1 – Data Cleaning & Preparation
 
-- Load the training data.
-- Handle missing values and remove duplicate rows.
-- Drop irrelevant columns (e.g., "Index").
-- Output basic data statistics (shape, missing counts, etc.).
-
----
-
-### Step 2: Initial Feature Selection and Preprocessing
-
-- Use `ExtraTreesClassifier` to identify important features.
-- Select features with importance > 0.017.
-- Apply standardization (e.g., `StandardScaler`) if necessary before clustering.
+- Load `train_data.csv`.
+- Handle missing values and drop duplicates.
+- Remove the non-informative column (`Index`), but keep a copy for later merging.
+- Print data shape, missing value count, and class balance.
 
 ---
 
-### Step 3: KMeans Clustering
+### Step 2 – Standardization of All Features
 
-- Apply `KMeans(n_clusters=5, random_state=42)` to the preprocessed data.
-- Assign each sample a cluster label.
-- Print the number of samples and number of bankrupt cases in each cluster.
-- Save `cluster_labels.csv` containing:
+- Use **all 95 original features** without early feature selection.
+- Apply `StandardScaler` to standardize the features.
+- Save the scaler with `joblib.dump(scaler, 'scaler.pkl')` for reuse in the test stage.
+
+---
+
+### Step 3 – KMeans Clustering
+
+- Run `KMeans(n_clusters=5, random_state=42)` on the standardized features.
+- Generate cluster labels for all training samples.
+- Combine the cluster labels with the original training data using `Index`.
+- Save the full dataset (including cluster) as `train_data_with_cluster.csv`.
+
+  ```python
+  df_cluster = pd.DataFrame({'Index': df.index, 'cluster': cluster_labels})
+  df_with_cluster = pd.concat([df, df_cluster], axis=1)
+  df_with_cluster.to_csv('train_data_with_cluster.csv', index=False)
 ---
 
 ### Step 4: Cluster Label Classifier (Supervised Model)
@@ -42,12 +47,16 @@ This project aims to improve bankruptcy prediction by dividing the dataset into 
 
 ---
 
-### Step 5: Subgroup Data Generation
 
-- Merge `cluster_labels.csv` back with the original training data using `Index`.
-- Split the data into separate CSV files, one for each cluster (e.g., `subgroup_0.csv`, `subgroup_1.csv`, ...).
-- Print statistics for each subgroup (total samples, # of bankrupt companies).
-- Mark any subgroup with **no bankrupt samples** for constant prediction (`ĥ = 0`).
+### Step 5 – Subgroup Data Generation *(Single Source File)*
+
+- Read the file `train_data_with_cluster.csv`, which contains all original features along with the `cluster` column.
+- For each cluster `k` (from 0 to 4), split the data into separate files:
+
+  ```python
+  for k in range(5):
+      df_with_cluster[df_with_cluster["cluster"] == k] \
+          .to_csv(f"subgroup_{k}.csv", index=False)
 
 ---
 
